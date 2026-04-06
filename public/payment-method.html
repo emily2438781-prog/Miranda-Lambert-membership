@@ -224,6 +224,34 @@
       line-height: 1.5;
     }
 
+    /* FILE UPLOAD */
+    .upload-area {
+      border: 2px dashed #2e2e2e;
+      border-radius: 6px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .upload-area:hover { border-color: #c9a84c; background: #111a08; }
+    .upload-area.has-file { border-color: #6fcf97; background: #0a1a0a; }
+
+    .upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+
+    .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+    .upload-area p { font-size: 0.82rem; color: #666; line-height: 1.5; }
+    .file-name { font-size: 0.82rem; color: #6fcf97; margin-top: 8px; display: none; }
+
     /* QR Code */
     .qr-wrap {
       text-align: center;
@@ -437,7 +465,17 @@
         <input type="text" id="btc-amount" placeholder="e.g. 0.00842" required />
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('btc')">Continue to Submit Payment</button>
+      <div class="form-group">
+        <label>Upload Proof of Payment</label>
+        <div class="upload-area" id="upload-area-btc">
+          <input type="file" id="proof-btc" accept="image/*" onchange="handleFile(this,'btc')" />
+          <div class="upload-icon">📎</div>
+          <p>Click to upload screenshot or photo<br><span style="color:#555;font-size:0.75rem;">PNG, JPG, JPEG — max 10MB</span></p>
+          <div class="file-name" id="file-name-btc"></div>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="goToSubmit('btc')">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -460,7 +498,17 @@
         <input type="number" id="apple-total" placeholder="e.g. 500" min="1" required />
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('apple')">Continue to Submit Payment</button>
+      <div class="form-group">
+        <label>Upload Proof of Payment</label>
+        <div class="upload-area" id="upload-area-apple">
+          <input type="file" id="proof-apple" accept="image/*" onchange="handleFile(this,'apple')" />
+          <div class="upload-icon">📎</div>
+          <p>Click to upload screenshot or photo<br><span style="color:#555;font-size:0.75rem;">PNG, JPG, JPEG — max 10MB</span></p>
+          <div class="file-name" id="file-name-apple"></div>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="goToSubmit('apple')">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -491,6 +539,16 @@
         btn.textContent = 'Copied!';
         setTimeout(() => btn.textContent = 'Copy', 2000);
       });
+    }
+
+    function handleFile(input, type) {
+      const area = document.getElementById('upload-area-' + type);
+      const nameEl = document.getElementById('file-name-' + type);
+      if (input.files && input.files[0]) {
+        nameEl.textContent = '✓ ' + input.files[0].name;
+        nameEl.style.display = 'block';
+        area.classList.add('has-file');
+      }
     }
 
     function goToSubmit(type) {
