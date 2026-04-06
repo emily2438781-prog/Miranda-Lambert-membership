@@ -145,6 +145,34 @@ app.post('/submit-payment', upload.single('proof_image'), async (req, res) => {
       status:        'pending'
     });
 
+    // ── Email YOU with all details + proof image attached ──────
+    const mailOptions = {
+      from: `"Fan Membership Site" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: `💰 New Payment Submission — ${tier} — ${submissionId}`,
+      html: `
+        <div style="font-family:Georgia,serif;background:#f9f9f9;padding:32px;">
+          <h2 style="color:#c9a84c;">New Payment Submission</h2>
+          <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+            <tr><td style="padding:8px;color:#555;"><b>Submission ID</b></td><td style="padding:8px;">${submissionId}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Full Name</b></td><td style="padding:8px;">${fullName}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Email</b></td><td style="padding:8px;">${email}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Membership Tier</b></td><td style="padding:8px;">${tier}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Amount Paid</b></td><td style="padding:8px;">${amount_paid}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Payment Method</b></td><td style="padding:8px;">${payment_method}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Code / TxID</b></td><td style="padding:8px;word-break:break-all;">${payment_code}</td></tr>
+          </table>
+          <p style="margin-top:20px;color:#888;font-size:0.85rem;">Proof of payment image is attached below.</p>
+        </div>
+      `,
+      attachments: req.file ? [{
+        filename: req.file.originalname,
+        path: req.file.path
+      }] : []
+    };
+
+    await transporter.sendMail(mailOptions).catch(err => console.error('Email error:', err));
+
     res.status(201).json({ success: true, submissionId });
   } catch (err) {
     console.error(err);
