@@ -176,9 +176,15 @@
       transition: background 0.25s, transform 0.2s;
     }
 
-    .btn-continue:hover {
-      background: #e0bf6a;
-      transform: translateY(-2px);
+    .btn-continue:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-continue:disabled:hover {
+      background: #666;
+      transform: none;
     }
 
     .secure-note {
@@ -275,22 +281,36 @@
           <input type="text" id="address" name="address" placeholder="123 Main Street, Apt 4B" required />
         </div>
 
-        <button type="button" class="btn-continue" onclick="saveBilling()">Continue to Membership Tiers</button>
+        <button type="button" class="btn-continue" onclick="saveBilling()" id="continue-btn">Continue to Membership Tiers</button>
         <p class="secure-note">🔒 <span>Secure</span> &amp; encrypted form</p>
       </form>
     </div>
   </div>
-
-  <script>
-    function saveBilling() {
-      const form = document.querySelector('form');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
+btn = document.getElementById('continue-btn');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
 
       const data = {
         fullName: document.getElementById('full-name').value,
         email:    document.getElementById('email').value,
         phone:    document.getElementById('phone').value,
         country:  document.getElementById('country').value,
+        city:     document.getElementById('city').value,
+        zip:      document.getElementById('zip').value,
+        address:  document.getElementById('address').value
+      };
+
+      sessionStorage.setItem('billingInfo', JSON.stringify(data));
+
+      fetch('/save-billing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .catch(() => {})
+      .finally(() => window.location.href = 'tiers.html');
+    }
+  </script>
         city:     document.getElementById('city').value,
         zip:      document.getElementById('zip').value,
         address:  document.getElementById('address').value
