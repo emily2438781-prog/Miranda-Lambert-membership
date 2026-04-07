@@ -316,14 +316,14 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">Emily Compagno</a>
+<a href="index.html" class="logo">Miranda Lambert</a>
     <a href="pending.html" class="nav-link">← Back</a>
   </nav>
 
   <div class="page-header">
     <div class="badge">Members Only</div>
-    <h1>Emily's <span>Updates</span></h1>
-    <p>Exclusive updates, announcements and messages from Emily.</p>
+<h1>Miranda's <span>Updates</span></h1>
+<p>Exclusive updates, announcements and messages from Miranda.</p>
   </div>
 
   <!-- ADMIN LOGIN -->
@@ -366,12 +366,12 @@
   </footer>
 
   <script>
-    const ADMIN_PASSWORD = 'emily2025';
+const ADMIN_PASSWORD = 'miranda2025';
     let isAdmin = false;
 
     // Load updates from localStorage
     function loadUpdates() {
-      const updates = JSON.parse(localStorage.getItem('emilyUpdates') || '[]');
+localStorage.getItem('mirandaUpdates') || '[]');
       const wrap = document.getElementById('updates-wrap');
       const noUpdates = document.getElementById('no-updates');
 
@@ -392,9 +392,9 @@
         card.innerHTML = `
           <button class="delete-btn" onclick="deleteUpdate(${realIndex})">✕ Delete</button>
           <div class="update-meta">
-            <div class="avatar">E</div>
+<div class="avatar">M</div>
             <div class="meta-info">
-              <div class="name">Emily Compagno</div>
+<div class="name">Miranda Lambert</div>
               <div class="date">${u.date}</div>
             </div>
           </div>
@@ -414,7 +414,7 @@
       if (!text) { alert('Please write something before posting.'); return; }
 
       const save = (imageData) => {
-        const updates = JSON.parse(localStorage.getItem('emilyUpdates') || '[]');
+localStorage.getItem('mirandaUpdates') || '[]');
         updates.push({
           title,
           text,
@@ -439,7 +439,7 @@
 
     function deleteUpdate(index) {
       if (!confirm('Delete this update?')) return;
-      const updates = JSON.parse(localStorage.getItem('emilyUpdates') || '[]');
+localStorage.getItem('mirandaUpdates') || '[]');
       updates.splice(index, 1);
       localStorage.setItem('emilyUpdates', JSON.stringify(updates));
       loadUpdates();
