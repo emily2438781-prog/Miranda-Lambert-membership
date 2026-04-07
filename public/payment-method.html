@@ -428,17 +428,17 @@
 
   <!-- PAYMENT OPTIONS -->
   <div class="options-wrap">
-    <div class="option-btn" id="opt-btc" onclick="showForm('btc')">
+    <div class="option-btn" id="opt-btc">
       <div class="opt-icon">₿</div>
       <div class="opt-label">Bitcoin</div>
       <div class="opt-sub">BTC — Crypto payment</div>
-      <button class="opt-cta">Pay With Bitcoin</button>
+      <button class="opt-cta" onclick="showForm('btc')">Pay With Bitcoin</button>
     </div>
-    <div class="option-btn" id="opt-apple" onclick="showForm('apple')">
+    <div class="option-btn" id="opt-apple">
       <div class="opt-icon">🎁</div>
       <div class="opt-label">Apple Gift Card</div>
       <div class="opt-sub">Redeem gift card balance</div>
-      <button class="opt-cta">Pay With Apple Gift Card</button>
+      <button class="opt-cta" onclick="showForm('apple')">Pay With Apple Gift Card</button>
     </div>
   </div>
 
@@ -484,7 +484,7 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('btc')" id="submit-btc">Submit Payment</button>
+      <button class="btn-submit" onclick="goToSubmit('btc')">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -517,7 +517,7 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('apple')" id="submit-apple">Submit Payment</button>
+      <button class="btn-submit" onclick="goToSubmit('apple')">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
