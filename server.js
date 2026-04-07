@@ -16,11 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error:', err));
 
-<<<<<<< HEAD
-// ── Billing Schema ──────────────────────────────────────────────
-=======
 // ── Schemas ─────────────────────────────────────────────────────
->>>>>>> 2ef683c96c24c9701db036243fb0186152c1b8af
 const billingSchema = new mongoose.Schema({
   fullName:  { type: String, required: true },
   email:     { type: String, required: true },
@@ -30,6 +26,20 @@ const billingSchema = new mongoose.Schema({
   zip:       { type: String, required: true },
   address:   { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
+});
+
+const paymentSchema = new mongoose.Schema({
+  fullName:      String,
+  email:         String,
+  tier:          String,
+  price:         Number,
+  paymentMethod: String,
+  amountPaid:    String,
+  paymentCode:   String,
+  proofImage:    String,
+  submissionId:  String,
+  status:        { type: String, default: 'pending' },
+  createdAt:     { type: Date, default: Date.now }
 });
 
 const Billing = mongoose.model('Billing', billingSchema);
@@ -78,10 +88,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-<<<<<<< HEAD
 // ── Send Confirmation Email ─────────────────────────────────────
-=======
->>>>>>> 2ef683c96c24c9701db036243fb0186152c1b8af
 async function sendConfirmationEmail(toEmail, fullName, tierName) {
   await transporter.sendMail({
     from: `"Team Miranda Lambert" <${process.env.EMAIL_USER}>`,
@@ -93,11 +100,7 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
 
           <div style="text-align:center;margin-bottom:28px;">
             <span style="font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;border:1px solid #c9a84c;padding:5px 16px;border-radius:20px;">
-<<<<<<< HEAD
               Miranda Lambert Fan Membership
-=======
-              Official Fan Membership
->>>>>>> 2ef683c96c24c9701db036243fb0186152c1b8af
             </span>
           </div>
 
@@ -119,34 +122,13 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
           </p>
 
           <hr style="border:none;border-top:1px solid #222;margin-bottom:24px;" />
-<<<<<<< HEAD
 
-=======
->>>>>>> 2ef683c96c24c9701db036243fb0186152c1b8af
           <p style="color:#555;font-size:0.8rem;text-align:center;letter-spacing:1px;">Team Miranda Lambert</p>
         </div>
       </div>
     `
   });
 }
-
-<<<<<<< HEAD
-// ── POST /confirm-payment (trigger email) ───────────────────────
-=======
-// ── POST /save-billing ──────────────────────────────────────────
-app.post('/save-billing', async (req, res) => {
-  try {
-    const { fullName, email, phone, country, city, zip, address } = req.body;
-    if (!fullName || !email || !phone || !country || !city || !zip || !address) {
-      return res.status(400).json({ error: 'All fields are required.' });
-    }
-    const billing = await Billing.create({ fullName, email, phone, country, city, zip, address });
-    res.status(201).json({ success: true, id: billing._id });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error.' });
-  }
-});
 
 // ── POST /submit-payment ────────────────────────────────────────
 app.post('/submit-payment', upload.single('proof_image'), async (req, res) => {
@@ -203,7 +185,6 @@ app.post('/submit-payment', upload.single('proof_image'), async (req, res) => {
 });
 
 // ── POST /confirm-payment (send email) ─────────────────────────
->>>>>>> 2ef683c96c24c9701db036243fb0186152c1b8af
 app.post('/confirm-payment', async (req, res) => {
   try {
     const { email, fullName, tierName } = req.body;
