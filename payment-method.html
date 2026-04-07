@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Method – Miranda Lambert Fan Membership</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #c9a84c;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    nav a.nav-link {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover { color: #c9a84c; }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 110px 24px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .step.done { color: #6fcf97; }
+    .step.active { color: #c9a84c; }
+
+    .step .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .step.done .num {
+      background: #6fcf97;
+      border-color: #6fcf97;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
+    .step.active .num {
+      background: #c9a84c;
+      border-color: #c9a84c;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
+    .step-line { width: 48px; height: 1px; background: #333; margin: 0 8px; }
+
+    .page-header {
+      text-align: center;
+      padding: 48px 24px 16px;
+    }
+
+    .page-header .badge {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 5px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 10px; }
+    .page-header h1 span { color: #c9a84c; }
+    .page-header p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+
+    .summary-bar {
+      max-width: 560px;
+      margin: 32px auto 0;
+      padding: 0 24px;
+    }
+
+    .summary-box {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: #aaa;
+    }
+
+    .summary-box strong { color: #fff; }
+    .summary-box .price { color: #c9a84c; font-size: 1.1rem; font-weight: bold; }
+
+    .options-wrap {
+      max-width: 560px;
+      margin: 28px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .option-btn {
+      background: #111;
+      border: 1px solid #2e2e2e;
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option-btn:hover { border-color: #c9a84c; transform: translateY(-2px); }
+    .option-btn.active { border-color: #c9a84c; background: #161408; }
+
+    .option-btn .opt-icon { font-size: 2.2rem; }
+
+    .option-btn .opt-label {
+      font-size: 0.95rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .option-btn .opt-sub { font-size: 0.75rem; color: #666; }
+
+    .option-btn .opt-cta {
+      margin-top: 6px;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-family: 'Georgia', serif;
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      padding: 9px 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .option-btn .opt-cta:hover { background: #e0bf6a; }
+
+    .form-wrap {
+      max-width: 560px;
+      margin: 28px auto 80px;
+      padding: 0 24px;
+    }
+
+    .payment-form {
+      display: none;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 36px 36px 32px;
+    }
+
+    .payment-form.visible { display: block; }
+
+    .payment-form h3 {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .payment-form h3 span { color: #c9a84c; }
+
+    .payment-form .form-sub {
+      font-size: 0.82rem;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .btc-address-box {
+      background: #1a1a1a;
+      border: 1px solid #2e2e2e;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btc-address-box .addr {
+      font-size: 0.78rem;
+      color: #c9a84c;
+      word-break: break-all;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid #444;
+      color: #aaa;
+      font-size: 0.72rem;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .copy-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 7px;
+    }
+
+    input, textarea {
+      background: #1a1a1a;
+      border: 1px solid #2e2e2e;
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      resize: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: #444; }
+    input:focus, textarea:focus { border-color: #c9a84c; }
+
+    .info-note {
+      background: #161408;
+      border: 1px solid #3a2e10;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      color: #a88a3a;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-submit:hover { background: #e0bf6a; transform: translateY(-2px); }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+
+    .secure-note span { color: #c9a84c; }
+
+    @media (max-width: 520px) {
+      nav { padding: 16px 20px; }
+      .options-wrap { grid-template-columns: 1fr; }
+      .payment-form { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Miranda Lambert</a>
+    <a href="tiers.html" class="nav-link">← Back to Tiers</a>
+  </nav>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step done"><div class="num">✓</div> Billing Info</div>
+    <div class="step-line"></div>
+    <div class="step done"><div class="num">✓</div> Membership Tier</div>
+    <div class="step-line"></div>
+    <div class="step active"><div class="num">3</div> Payment</div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="badge">Secure Checkout</div>
+    <h1>Choose <span>Payment Method</span></h1>
+    <p>Select how you'd like to complete your membership payment.</p>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="summary-bar">
+    <div class="summary-box">
+      <div>Selected Tier: <strong id="tier-name">—</strong></div>
+      <div class="price" id="tier-price">—</div>
+    </div>
+  </div>
+
+  <!-- PAYMENT OPTIONS -->
+  <div class="options-wrap">
+    <div class="option-btn" id="opt-btc" onclick="showForm('btc')">
+      <div class="opt-icon">₿</div>
+      <div class="opt-label">Bitcoin</div>
+      <div class="opt-sub">BTC — Crypto payment</div>
+      <button class="opt-cta">Pay With Bitcoin</button>
+    </div>
+    <div class="option-btn" id="opt-apple" onclick="showForm('apple')">
+      <div class="opt-icon">🎁</div>
+      <div class="opt-label">Apple Gift Card</div>
+      <div class="opt-sub">Redeem gift card balance</div>
+      <button class="opt-cta">Pay With Apple Gift Card</button>
+    </div>
+  </div>
+
+  <!-- FORMS -->
+  <div class="form-wrap">
+
+    <!-- BITCOIN FORM -->
+    <div class="payment-form" id="form-btc">
+      <h3>Pay With <span>Bitcoin (BTC)</span></h3>
+      <p class="form-sub">Send the exact amount to the BTC address below, then submit your transaction ID for verification.</p>
+
+      <div class="btc-address-box">
+        <div class="addr" id="btc-addr">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+        <button class="copy-btn" onclick="copyBTC()">Copy</button>
+      </div>
+
+      <div class="info-note">
+        ⚠️ Send only <strong>Bitcoin (BTC)</strong> to this address. Sending any other coin may result in permanent loss.
+      </div>
+
+      <div class="form-group">
+        <label for="btc-txid">Transaction ID (TxID)</label>
+        <input type="text" id="btc-txid" placeholder="Paste your BTC transaction ID here" required />
+      </div>
+
+      <div class="form-group">
+        <label for="btc-amount">Amount Sent (BTC)</label>
+        <input type="text" id="btc-amount" placeholder="e.g. 0.00842" required />
+      </div>
+
+      <button class="btn-submit" onclick="goToSubmit('btc')">Continue to Submit Payment</button>
+      <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
+    </div>
+
+    <!-- APPLE GIFT CARD FORM -->
+    <div class="payment-form" id="form-apple">
+      <h3>Pay With <span>Apple Gift Card</span></h3>
+      <p class="form-sub">Enter your Apple Gift Card redemption code(s) below. Multiple codes can be submitted if needed to cover the total amount.</p>
+
+      <div class="info-note">
+        💡 Scratch the back of your gift card to reveal the code. Each code is 16 characters (e.g. XXXX-XXXX-XXXX-XXXX).
+      </div>
+
+      <div class="form-group">
+        <label for="apple-code">Gift Card Code(s)</label>
+        <textarea id="apple-code" rows="3" placeholder="Enter one or more gift card codes, one per line" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="apple-total">Total Value of Cards ($)</label>
+        <input type="number" id="apple-total" placeholder="e.g. 500" min="1" required />
+      </div>
+
+      <button class="btn-submit" onclick="goToSubmit('apple')">Continue to Submit Payment</button>
+      <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
+    </div>
+
+  </div>
+
+  <script>
+    const tier = JSON.parse(sessionStorage.getItem('selectedTier') || '{}');
+    if (tier.name) {
+      document.getElementById('tier-name').textContent = tier.name;
+      document.getElementById('tier-price').textContent = '$' + tier.price.toLocaleString();
+    }
+
+    function showForm(type) {
+      document.getElementById('form-btc').classList.remove('visible');
+      document.getElementById('form-apple').classList.remove('visible');
+      document.getElementById('opt-btc').classList.remove('active');
+      document.getElementById('opt-apple').classList.remove('active');
+      document.getElementById('form-' + type).classList.add('visible');
+      document.getElementById('opt-' + type).classList.add('active');
+      document.getElementById('form-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyBTC() {
+      const addr = document.getElementById('btc-addr').textContent;
+      navigator.clipboard.writeText(addr).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    function goToSubmit(type) {
+      sessionStorage.setItem('paymentMethod', type);
+      window.location.href = 'payment-submit.html';
+    }
+  </script>
+
+</body>
+</html>

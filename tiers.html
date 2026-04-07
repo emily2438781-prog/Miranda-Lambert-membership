@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Membership Tiers – Miranda Lambert Fan Club</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #c9a84c;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    nav a.nav-link {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover { color: #c9a84c; }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 110px 24px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .step.done { color: #6fcf97; }
+    .step.active { color: #c9a84c; }
+
+    .step .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .step.done .num {
+      background: #6fcf97;
+      border-color: #6fcf97;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
+    .step.active .num {
+      background: #c9a84c;
+      border-color: #c9a84c;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
+    .step-line {
+      width: 48px;
+      height: 1px;
+      background: #333;
+      margin: 0 8px;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 48px 24px 16px;
+    }
+
+    .page-header .badge {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 5px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    .page-header h1 span { color: #c9a84c; }
+
+    .page-header p {
+      font-size: 0.9rem;
+      color: #777;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 48px auto 80px;
+      padding: 0 24px;
+    }
+
+    .tier-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tier-card:hover { transform: translateY(-4px); }
+    .tier-card.popular { border-color: #c9a84c; }
+
+    .popular-badge {
+      position: absolute;
+      top: 16px; right: -28px;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 36px;
+      transform: rotate(45deg);
+    }
+
+    .tier-icon { font-size: 1.4rem; margin-bottom: 12px; }
+
+    .tier-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .tier-price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #c9a84c;
+      margin-bottom: 4px;
+    }
+
+    .tier-price span {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: normal;
+    }
+
+    .tier-tagline {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .divider { height: 1px; background: #222; margin-bottom: 18px; }
+
+    .benefits {
+      list-style: none;
+      flex: 1;
+      margin-bottom: 24px;
+    }
+
+    .benefits li {
+      font-size: 0.83rem;
+      color: #bbb;
+      padding: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+
+    .benefits li::before {
+      content: '✓';
+      color: #c9a84c;
+      font-weight: bold;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .btn-select {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      font-family: 'Georgia', serif;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 13px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .tier-card.popular .btn-select {
+      background: #c9a84c;
+      color: #0a0a0a;
+    }
+
+    .btn-select:hover {
+      background: #c9a84c;
+      color: #0a0a0a;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 520px) {
+      nav { padding: 16px 20px; }
+      .tiers-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Miranda Lambert</a>
+    <a href="billing.html" class="nav-link">← Back to Billing</a>
+  </nav>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step done">
+      <div class="num">✓</div> Billing Info
+    </div>
+    <div class="step-line"></div>
+    <div class="step active">
+      <div class="num">2</div> Membership Tier
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="num">3</div> Confirmation
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="badge">Choose Your Level</div>
+    <h1>Select Your <span>Membership Tier</span></h1>
+    <p>Pick the level that fits you best. All tiers include a digital fan card and access to the private community.</p>
+  </div>
+
+  <!-- TIERS -->
+  <div class="tiers-grid">
+
+    <!-- BRONZE -->
+    <div class="tier-card">
+      <div class="tier-icon">🟢</div>
+      <div class="tier-name">Bronze Fan</div>
+      <div class="tier-price">$500 <span>/ year</span></div>
+      <div class="tier-tagline">For casual supporters</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Digital fan membership card</li>
+        <li>Access to exclusive member updates</li>
+        <li>Early announcements for events &amp; tours</li>
+        <li>Access to private fan community (Discord / Telegram)</li>
+        <li>Meeting with Miranda</li>
+        <li>Monthly fan recognition list</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Bronze Fan', 500)">Select Tier</button>
+    </div>
+
+    <!-- SILVER -->
+    <div class="tier-card">
+      <div class="tier-icon">🔵</div>
+      <div class="tier-name">Silver Fan</div>
+      <div class="tier-price">$1,000 <span>/ year</span></div>
+      <div class="tier-tagline">More perks, more access</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Bronze</li>
+        <li>Meeting with Miranda</li>
+        <li>Physical fan membership card</li>
+        <li>Exclusive wallpapers &amp; premium photos</li>
+        <li>5% merch discount</li>
+        <li>Priority replies during livestream chats</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Silver Fan', 1000)">Select Tier</button>
+    </div>
+
+    <!-- GOLD -->
+    <div class="tier-card">
+      <div class="tier-icon">🟣</div>
+      <div class="tier-name">Gold Fan</div>
+      <div class="tier-price">$1,500 <span>/ year</span></div>
+      <div class="tier-tagline">For dedicated fans</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Silver</li>
+        <li>Meeting with Miranda</li>
+        <li>Birthday shout-out</li>
+        <li>Exclusive livestream access</li>
+        <li>Limited edition fan badge</li>
+        <li>10% merch discount</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Gold Fan', 1500)">Select Tier</button>
+    </div>
+
+    <!-- PLATINUM -->
+    <div class="tier-card popular">
+      <div class="popular-badge">Popular</div>
+      <div class="tier-icon">🟡</div>
+      <div class="tier-name">Platinum Fan</div>
+      <div class="tier-price">$2,000 <span>/ year</span></div>
+      <div class="tier-tagline">The fan experience upgrade</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Gold</li>
+        <li>Meeting with Miranda</li>
+        <li>Quarterly VIP livestream hangout</li>
+        <li>Behind-the-scenes concert footage</li>
+        <li>Name displayed on fan wall</li>
+        <li>Early concert ticket access (24 hours)</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Platinum Fan', 2000)">Select Tier</button>
+    </div>
+
+    <!-- DIAMOND -->
+    <div class="tier-card">
+      <div class="tier-icon">🔴</div>
+      <div class="tier-name">Diamond Fan</div>
+      <div class="tier-price">$3,000 <span>/ year</span></div>
+      <div class="tier-tagline">Premium fan status</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Platinum</li>
+        <li>Meeting with Miranda</li>
+        <li>Exclusive fan merchandise (yearly)</li>
+        <li>Direct fan Q&amp;A session access</li>
+        <li>15% merch discount</li>
+        <li>Personalized thank-you video</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Diamond Fan', 3000)">Select Tier</button>
+    </div>
+
+    <!-- ELITE -->
+    <div class="tier-card">
+      <div class="tier-icon">🟠</div>
+      <div class="tier-name">Elite Fan</div>
+      <div class="tier-price">$4,000 <span>/ year</span></div>
+      <div class="tier-tagline">VIP-level access</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Diamond</li>
+        <li>Meeting with Miranda</li>
+        <li>VIP seating at concerts</li>
+        <li>Limited signed memorabilia</li>
+        <li>Private VIP fan group</li>
+        <li>Early ticket access (48 hours)</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Elite Fan', 4000)">Select Tier</button>
+    </div>
+
+    <!-- ULTIMATE LEGEND -->
+    <div class="tier-card">
+      <div class="tier-icon">🏆</div>
+      <div class="tier-name">Ultimate Legend Fan</div>
+      <div class="tier-price">$5,000 <span>/ year</span></div>
+      <div class="tier-tagline">The highest honor</div>
+      <div class="divider"></div>
+      <ul class="benefits">
+        <li>Everything in Elite</li>
+        <li>Meeting with Miranda</li>
+        <li>Annual private meet &amp; greet</li>
+        <li>Name featured on official website</li>
+        <li>Custom signed merchandise</li>
+        <li>20% lifetime merch discount</li>
+        <li>Ultimate fan badge rank</li>
+      </ul>
+      <button class="btn-select" onclick="selectTier('Ultimate Legend Fan', 5000)">Select Tier</button>
+    </div>
+
+  </div>
+
+  <script>
+    function selectTier(name, price) {
+      sessionStorage.setItem('selectedTier', JSON.stringify({ name, price }));
+      window.location.href = 'payment-method.html';
+    }
+  </script>
+
+</body>
+</html>

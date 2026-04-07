@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miranda Lambert – Official Fan Membership</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #c9a84c;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #c9a84c; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%),
+        url('mira.jpeg')
+        center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero .badge {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span { color: #c9a84c; }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: #ccc;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .btn-join {
+      display: inline-block;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 44px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-join:hover {
+      background: #e0bf6a;
+      transform: translateY(-2px);
+    }
+
+    .hero .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    /* FEATURES STRIP */
+    .features {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      background: #111;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+
+    .feature-item {
+      flex: 1 1 200px;
+      text-align: center;
+      padding: 36px 24px;
+      border-right: 1px solid #222;
+    }
+
+    .feature-item:last-child { border-right: none; }
+
+    .feature-item .icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+    .feature-item h3 {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      margin-bottom: 6px;
+    }
+
+    .feature-item p { font-size: 0.82rem; color: #888; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Miranda Lambert</div>
+    <a href="billing.html">Join Membership</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">Official Fan Membership</div>
+    <h1>Welcome to<br><span>Miranda Lambert</span><br>Fan Club</h1>
+    <p>Get exclusive access to music, events, and a community of fans who share your love for country's queen.</p>
+    <a href="billing.html" class="btn-join">Join Membership</a>
+    <div class="scroll-hint">↓ Scroll to explore</div>
+  </section>
+
+  <!-- FEATURES STRIP -->
+  <section class="features">
+    <div class="feature-item">
+      <div class="icon">🎸</div>
+      <h3>Exclusive Content</h3>
+      <p>Behind-the-scenes videos, studio sessions, and personal updates.</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🎟️</div>
+      <h3>Concert Access</h3>
+      <p>Priority access to live shows, tours, and meet-and-greets.</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🏅</div>
+      <h3>Fan Card</h3>
+      <p>Your official digital fan membership card.</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">💬</div>
+      <h3>Community</h3>
+      <p>Connect with fellow fans in a private community.</p>
+    </div>
+  </section>
+
+</body>
+</html>

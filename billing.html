@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Billing Info – Miranda Lambert Fan Membership</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #c9a84c;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #c9a84c; }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: 110px 24px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .step.active { color: #c9a84c; }
+
+    .step .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .step.active .num {
+      background: #c9a84c;
+      border-color: #c9a84c;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
+    .step-line {
+      width: 48px;
+      height: 1px;
+      background: #333;
+      margin: 0 8px;
+    }
+
+    .form-wrap {
+      max-width: 600px;
+      margin: 40px auto 60px;
+      padding: 0 24px;
+    }
+
+    .form-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 40px 40px 36px;
+    }
+
+    .form-card h2 {
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .form-card h2 span { color: #c9a84c; }
+
+    .form-card .subtitle {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 32px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 7px;
+    }
+
+    input, select {
+      background: #1a1a1a;
+      border: 1px solid #2e2e2e;
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    input::placeholder { color: #444; }
+    input:focus, select:focus { border-color: #c9a84c; }
+    select option { background: #1a1a1a; }
+
+    .btn-continue {
+      display: block;
+      width: 100%;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-continue:hover {
+      background: #e0bf6a;
+      transform: translateY(-2px);
+    }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 16px;
+      letter-spacing: 1px;
+    }
+
+    .secure-note span { color: #c9a84c; }
+
+    @media (max-width: 520px) {
+      .form-card { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      nav { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Miranda Lambert</a>
+    <a href="tiers.html">Membership Tiers</a>
+  </nav>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active">
+      <div class="num">1</div> Billing Info
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="num">2</div> Membership Tier
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="num">3</div> Confirmation
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap">
+    <div class="form-card">
+      <h2>Billing <span>Information</span></h2>
+      <p class="subtitle">Enter your details to continue to membership selection.</p>
+
+      <form action="membership.html" method="get">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" name="full_name" placeholder="Jane Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+          </div>
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" name="country" required>
+              <option value="" disabled selected>Select country</option>
+              <option>United States</option>
+              <option>Canada</option>
+              <option>United Kingdom</option>
+              <option>Australia</option>
+              <option>Germany</option>
+              <option>France</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" placeholder="Nashville" required />
+          </div>
+          <div class="form-group">
+            <label for="zip">Zip / Postal Code</label>
+            <input type="text" id="zip" name="zip" placeholder="37201" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Billing Address</label>
+          <input type="text" id="address" name="address" placeholder="123 Main Street, Apt 4B" required />
+        </div>
+
+        <button type="button" id="continue-btn" class="btn-continue" onclick="saveBilling()">Continue to Membership Tiers</button>
+        <p class="secure-note">🔒 <span>Secure</span> &amp; encrypted form</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function saveBilling() {
+      const form = document.querySelector('form');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const btn = document.getElementById('continue-btn');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      const data = {
+        fullName: document.getElementById('full-name').value,
+        email:    document.getElementById('email').value,
+        phone:    document.getElementById('phone').value,
+        country:  document.getElementById('country').value,
+        city:     document.getElementById('city').value,
+        zip:      document.getElementById('zip').value,
+        address:  document.getElementById('address').value
+      };
+
+      sessionStorage.setItem('billingInfo', JSON.stringify(data));
+
+      fetch('/save-billing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .catch(() => {})
+      .finally(() => window.location.href = 'tiers.html');
+    }
+  </script>
+</body>
+</html>

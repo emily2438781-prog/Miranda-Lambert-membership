@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Payment – Miranda Lambert Fan Membership</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #c9a84c;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    nav a.nav-link {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover { color: #c9a84c; }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 110px 24px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .step.done { color: #6fcf97; }
+    .step.active { color: #c9a84c; }
+
+    .step .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .step.done .num { background: #6fcf97; border-color: #6fcf97; color: #0a0a0a; font-weight: bold; }
+    .step.active .num { background: #c9a84c; border-color: #c9a84c; color: #0a0a0a; font-weight: bold; }
+    .step-line { width: 48px; height: 1px; background: #333; margin: 0 8px; }
+
+    .page-header {
+      text-align: center;
+      padding: 48px 24px 16px;
+    }
+
+    .page-header .badge {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 5px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 10px; }
+    .page-header h1 span { color: #c9a84c; }
+    .page-header p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+
+    .form-wrap {
+      max-width: 580px;
+      margin: 36px auto 80px;
+      padding: 0 24px;
+    }
+
+    .summary-box {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: #aaa;
+    }
+
+    .summary-row strong { color: #fff; }
+    .summary-row .gold { color: #c9a84c; font-weight: bold; font-size: 1rem; }
+
+    .method-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      color: #c9a84c;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .form-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 36px 36px 32px;
+    }
+
+    .form-card h3 { font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 20px; }
+    .form-card h3 span { color: #c9a84c; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 7px;
+    }
+
+    input, textarea {
+      background: #1a1a1a;
+      border: 1px solid #2e2e2e;
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      resize: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: #444; }
+    input:focus, textarea:focus { border-color: #c9a84c; }
+
+    .upload-area {
+      border: 2px dashed #2e2e2e;
+      border-radius: 6px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .upload-area:hover { border-color: #c9a84c; background: #111a08; }
+    .upload-area.has-file { border-color: #6fcf97; background: #0a1a0a; }
+
+    .upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+
+    .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+
+    .upload-area p {
+      font-size: 0.82rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .upload-area .file-name {
+      font-size: 0.82rem;
+      color: #6fcf97;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-submit:hover { background: #e0bf6a; transform: translateY(-2px); }
+
+    .btn-submit:disabled {
+      background: #555;
+      color: #888;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+
+    .secure-note span { color: #c9a84c; }
+
+    @media (max-width: 520px) {
+      nav { padding: 16px 20px; }
+      .form-card { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Miranda Lambert</a>
+    <a href="payment-method.html" class="nav-link">← Back to Payment Method</a>
+  </nav>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step done"><div class="num">✓</div> Billing Info</div>
+    <div class="step-line"></div>
+    <div class="step done"><div class="num">✓</div> Membership Tier</div>
+    <div class="step-line"></div>
+    <div class="step active"><div class="num">3</div> Payment</div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="badge">Final Step</div>
+    <h1>Submit Your <span>Payment</span></h1>
+    <p>Fill in your payment details and upload proof to complete your membership.</p>
+  </div>
+
+  <div class="form-wrap">
+
+    <div class="summary-box">
+      <div class="summary-row">
+        <span>Membership Tier</span>
+        <strong id="sum-tier">—</strong>
+      </div>
+      <div class="summary-row">
+        <span>Amount Due</span>
+        <span class="gold" id="sum-price">—</span>
+      </div>
+    </div>
+
+    <div class="method-badge" id="method-badge">— Payment Method</div>
+
+    <div class="form-card">
+      <h3>Payment <span>Details</span></h3>
+
+      <form id="payment-form" enctype="multipart/form-data">
+        <input type="hidden" id="field-tier" name="tier" />
+        <input type="hidden" id="field-price" name="price" />
+        <input type="hidden" id="field-method" name="payment_method" />
+
+        <div class="form-group">
+          <label for="amount-paid">Amount Paid</label>
+          <input type="text" id="amount-paid" name="amount_paid" placeholder="e.g. $500 or 0.00842 BTC" required />
+        </div>
+
+        <div class="form-group" id="code-group">
+          <label id="code-label" for="payment-code">Gift Card Code / BTC Transaction ID</label>
+          <textarea id="payment-code" name="payment_code" rows="3" placeholder="Paste your code or transaction ID here" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Proof of Payment</label>
+          <div class="upload-area" id="upload-area">
+            <input type="file" id="proof-file" name="proof_image" accept="image/*" required onchange="handleFile(this)" />
+            <div class="upload-icon">📎</div>
+            <p>Click to upload or drag &amp; drop<br><span style="color:#555;font-size:0.75rem;">PNG, JPG, JPEG — max 10MB</span></p>
+            <div class="file-name" id="file-name"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">Submit Payment</button>
+        <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const tier   = JSON.parse(sessionStorage.getItem('selectedTier') || '{}');
+    const method = sessionStorage.getItem('paymentMethod') || 'btc';
+
+    if (tier.name) {
+      document.getElementById('sum-tier').textContent  = tier.name;
+      document.getElementById('sum-price').textContent = '$' + tier.price.toLocaleString();
+      document.getElementById('field-tier').value  = tier.name;
+      document.getElementById('field-price').value = tier.price;
+    }
+
+    const methodLabel = method === 'btc' ? '₿ Bitcoin (BTC)' : '🎁 Apple Gift Card';
+    document.getElementById('method-badge').textContent = methodLabel;
+    document.getElementById('field-method').value = method === 'btc' ? 'Bitcoin' : 'Apple Gift Card';
+
+    document.getElementById('code-label').textContent =
+      method === 'btc' ? 'BTC Transaction ID' : 'Apple Gift Card Code(s)';
+    document.getElementById('payment-code').placeholder =
+      method === 'btc' ? 'Paste your BTC transaction ID here' : 'Enter gift card code(s), one per line';
+
+    function handleFile(input) {
+      const area = document.getElementById('upload-area');
+      const nameEl = document.getElementById('file-name');
+      if (input.files && input.files[0]) {
+        nameEl.textContent = '✓ ' + input.files[0].name;
+        nameEl.style.display = 'block';
+        area.classList.add('has-file');
+      }
+    }
+
+    document.getElementById('payment-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      const billing = JSON.parse(sessionStorage.getItem('billingInfo') || '{}');
+      const formData = new FormData(this);
+      Object.entries(billing).forEach(([k, v]) => formData.append(k, v));
+
+      try {
+        const res = await fetch('/submit-payment', { method: 'POST', body: formData });
+        if (res.ok) {
+          sessionStorage.setItem('paymentSubmitted', 'true');
+          window.location.href = 'pending.html';
+        } else {
+          alert('Submission failed. Please try again.');
+          btn.disabled = false;
+          btn.textContent = 'Submit Payment';
+        }
+      } catch {
+        sessionStorage.setItem('paymentSubmitted', 'true');
+        window.location.href = 'pending.html';
+      }
+    });
+  </script>
+
+</body>
+</html>

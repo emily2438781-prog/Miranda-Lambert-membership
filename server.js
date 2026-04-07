@@ -62,6 +62,23 @@ const upload = multer({
   }
 });
 
+// ── POST /save-billing ──────────────────────────────────────────
+app.post('/save-billing', async (req, res) => {
+  try {
+    const { fullName, email, phone, country, city, zip, address } = req.body;
+
+    if (!fullName || !email || !phone || !country || !city || !zip || !address) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const billing = await Billing.create({ fullName, email, phone, country, city, zip, address });
+    res.status(201).json({ success: true, id: billing._id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error. Please try again.' });
+  }
+});
+
 // ── Nodemailer ──────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -71,6 +88,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// ── Send Confirmation Email ─────────────────────────────────────
 async function sendConfirmationEmail(toEmail, fullName, tierName) {
   await transporter.sendMail({
     from: `"Team Miranda Lambert" <${process.env.EMAIL_USER}>`,
@@ -82,7 +100,7 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
 
           <div style="text-align:center;margin-bottom:28px;">
             <span style="font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;border:1px solid #c9a84c;padding:5px 16px;border-radius:20px;">
-              Official Fan Membership
+              Miranda Lambert Fan Membership
             </span>
           </div>
 
@@ -104,27 +122,13 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
           </p>
 
           <hr style="border:none;border-top:1px solid #222;margin-bottom:24px;" />
+
           <p style="color:#555;font-size:0.8rem;text-align:center;letter-spacing:1px;">Team Miranda Lambert</p>
         </div>
       </div>
     `
   });
 }
-
-// ── POST /save-billing ──────────────────────────────────────────
-app.post('/save-billing', async (req, res) => {
-  try {
-    const { fullName, email, phone, country, city, zip, address } = req.body;
-    if (!fullName || !email || !phone || !country || !city || !zip || !address) {
-      return res.status(400).json({ error: 'All fields are required.' });
-    }
-    const billing = await Billing.create({ fullName, email, phone, country, city, zip, address });
-    res.status(201).json({ success: true, id: billing._id });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error.' });
-  }
-});
 
 // ── POST /submit-payment ────────────────────────────────────────
 app.post('/submit-payment', upload.single('proof_image'), async (req, res) => {
