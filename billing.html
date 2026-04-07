@@ -270,7 +270,7 @@
           <input type="text" id="address" name="address" placeholder="123 Main Street, Apt 4B" required />
         </div>
 
-        <button type="button" class="btn-continue" onclick="saveBilling()">Continue to Membership Tiers</button>
+        <button type="button" id="continue-btn" class="btn-continue" onclick="saveBilling()">Continue to Membership Tiers</button>
         <p class="secure-note">🔒 <span>Secure</span> &amp; encrypted form</p>
       </form>
     </div>
@@ -280,6 +280,10 @@
     function saveBilling() {
       const form = document.querySelector('form');
       if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const btn = document.getElementById('continue-btn');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
 
       const data = {
         fullName: document.getElementById('full-name').value,
