@@ -286,7 +286,13 @@
       </form>
     </div>
   </div>
-btn = document.getElementById('continue-btn');
+
+  <script>
+    function saveBilling() {
+      const form = document.querySelector('form');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const btn = document.getElementById('continue-btn');
       btn.disabled = true;
       btn.textContent = 'Processing...';
 
@@ -295,22 +301,6 @@ btn = document.getElementById('continue-btn');
         email:    document.getElementById('email').value,
         phone:    document.getElementById('phone').value,
         country:  document.getElementById('country').value,
-        city:     document.getElementById('city').value,
-        zip:      document.getElementById('zip').value,
-        address:  document.getElementById('address').value
-      };
-
-      sessionStorage.setItem('billingInfo', JSON.stringify(data));
-
-      fetch('/save-billing', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-      .catch(() => {})
-      .finally(() => window.location.href = 'tiers.html');
-    }
-  </script>
         city:     document.getElementById('city').value,
         zip:      document.getElementById('zip').value,
         address:  document.getElementById('address').value
