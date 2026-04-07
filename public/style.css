@@ -1,0 +1,241 @@
+/* ── Reset ─────────────────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Georgia', serif;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%), url('mira.jpeg') center/cover no-repeat fixed, #0a0a0a;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ── Nav ───────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 48px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+nav .logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #c9a84c;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+nav a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: #c9a84c; }
+
+/* ── Steps ─────────────────────────────────────────────────────── */
+.steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 110px 24px 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.step.done { color: #6fcf97; }
+.step.active { color: #c9a84c; }
+
+.step .num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid #555;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+}
+
+.step.done .num  { background: #6fcf97; border-color: #6fcf97; color: #0a0a0a; font-weight: bold; }
+.step.active .num { background: #c9a84c; border-color: #c9a84c; color: #0a0a0a; font-weight: bold; }
+
+.step-line { width: 48px; height: 1px; background: #333; margin: 0 8px; }
+
+/* ── Page Header ───────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  padding: 48px 24px 16px;
+}
+
+.page-header .badge {
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  border: 1px solid #c9a84c;
+  padding: 5px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.page-header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 10px; }
+.page-header h1 span { color: #c9a84c; }
+.page-header p { font-size: 0.9rem; color: #777; line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+/* ── Features Strip ───────────────────────────────────────────── */
+.features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  background: #111;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+.feature-item {
+  flex: 1 1 200px;
+  text-align: center;
+  padding: 36px 24px;
+  border-right: 1px solid #222;
+}
+
+.feature-item:last-child { border-right: none; }
+
+.feature-item .icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+.feature-item h3 {
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 6px;
+}
+
+.feature-item p { font-size: 0.82rem; color: #888; line-height: 1.5; }
+
+/* ── Form Shared ───────────────────────────────────────────────── */
+.form-wrap {
+  max-width: 600px;
+  margin: 40px auto 60px;
+  padding: 0 24px;
+}
+
+.form-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 40px 40px 36px;
+}
+
+.form-card h2 { font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 6px; }
+.form-card h2 span, .form-card h3 span { color: #c9a84c; }
+.form-card .subtitle { font-size: 0.85rem; color: #777; margin-bottom: 32px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 7px;
+}
+
+input, select, textarea {
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  resize: none;
+}
+
+input::placeholder, textarea::placeholder { color: #444; }
+input:focus, select:focus, textarea:focus { border-color: #c9a84c; }
+select option { background: #1a1a1a; }
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: #c9a84c;
+  color: #0a0a0a;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.2s;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-primary:hover { background: #e0bf6a; transform: translateY(-2px); }
+.btn-primary:disabled { background: #555; color: #888; cursor: not-allowed; transform: none; }
+
+/* ── Info Note ─────────────────────────────────────────────────── */
+.info-note {
+  background: #161408;
+  border: 1px solid #3a2e10;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  color: #a88a3a;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* ── Secure Note ───────────────────────────────────────────────── */
+.secure-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 16px;
+  letter-spacing: 1px;
+}
+
+.secure-note span { color: #c9a84c; }
+
+/* ── Divider ───────────────────────────────────────────────────── */
+.divider { height: 1px; background: #222; margin-bottom: 18px; }
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  nav { padding: 16px 20px; }
+  .form-card { padding: 28px 20px; }
+  .form-row { grid-template-columns: 1fr; }
+}
