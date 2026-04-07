@@ -434,12 +434,6 @@
       <div class="opt-sub">BTC — Crypto payment</div>
       <button class="opt-cta">Pay With Bitcoin</button>
     </div>
-    <div class="option-btn" id="opt-apple" onclick="showForm('apple')">
-      <div class="opt-icon">🎁</div>
-      <div class="opt-label">Apple Gift Card</div>
-      <div class="opt-sub">Redeem gift card balance</div>
-      <button class="opt-cta">Pay With Apple Gift Card</button>
-    </div>
   </div>
 
   <!-- FORMS -->
@@ -532,13 +526,8 @@
     }
 
     function showForm(type) {
-      document.getElementById('form-btc').classList.remove('visible');
-      document.getElementById('form-apple').classList.remove('visible');
-      document.getElementById('opt-btc').classList.remove('active');
-      document.getElementById('opt-apple').classList.remove('active');
-      document.getElementById('form-' + type).classList.add('visible');
-      document.getElementById('opt-' + type).classList.add('active');
-      document.getElementById('form-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById('form-btc').classList.add('visible');
+      document.getElementById('opt-btc').classList.add('active');
     }
 
     function copyBTC() {
