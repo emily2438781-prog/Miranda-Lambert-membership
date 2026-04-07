@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Emily's Updates – Fan Membership</title>
+  <title>Miranda's Updates – Fan Membership</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -351,11 +351,6 @@
     <div class="no-updates" id="no-updates">No updates yet. Check back soon! 🌟</div>
   </div>
 
-  <!-- ADMIN TOGGLE -->
-  <div class="admin-toggle">
-    <button class="btn-admin" onclick="toggleAdminLogin()">Admin</button>
-  </div>
-
   <!-- FOOTER -->
   <footer>
     <a href="https://wa.me/18067025788" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Georgia',serif;font-size:0.85rem;font-weight:bold;letter-spacing:1px;padding:12px 24px;border-radius:30px;text-decoration:none;">
@@ -366,12 +361,12 @@
   </footer>
 
   <script>
-const ADMIN_PASSWORD = 'miranda2025';
+    const ADMIN_PASSWORD = 'miranda2025';
     let isAdmin = false;
 
     // Load updates from localStorage
     function loadUpdates() {
-localStorage.getItem('mirandaUpdates') || '[]');
+      const updates = JSON.parse(localStorage.getItem('mirandaUpdates') || '[]');
       const wrap = document.getElementById('updates-wrap');
       const noUpdates = document.getElementById('no-updates');
 
@@ -392,9 +387,9 @@ localStorage.getItem('mirandaUpdates') || '[]');
         card.innerHTML = `
           <button class="delete-btn" onclick="deleteUpdate(${realIndex})">✕ Delete</button>
           <div class="update-meta">
-<div class="avatar">M</div>
+            <div class="avatar">M</div>
             <div class="meta-info">
-<div class="name">Miranda Lambert</div>
+              <div class="name">Miranda Lambert</div>
               <div class="date">${u.date}</div>
             </div>
           </div>
@@ -414,14 +409,14 @@ localStorage.getItem('mirandaUpdates') || '[]');
       if (!text) { alert('Please write something before posting.'); return; }
 
       const save = (imageData) => {
-localStorage.getItem('mirandaUpdates') || '[]');
+        const updates = JSON.parse(localStorage.getItem('mirandaUpdates') || '[]');
         updates.push({
           title,
           text,
           image: imageData || null,
           date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })
         });
-        localStorage.setItem('emilyUpdates', JSON.stringify(updates));
+        localStorage.setItem('mirandaUpdates', JSON.stringify(updates));
         document.getElementById('post-title').value = '';
         document.getElementById('post-text').value  = '';
         document.getElementById('post-image').value = '';
@@ -439,9 +434,9 @@ localStorage.getItem('mirandaUpdates') || '[]');
 
     function deleteUpdate(index) {
       if (!confirm('Delete this update?')) return;
-localStorage.getItem('mirandaUpdates') || '[]');
+      const updates = JSON.parse(localStorage.getItem('mirandaUpdates') || '[]');
       updates.splice(index, 1);
-      localStorage.setItem('emilyUpdates', JSON.stringify(updates));
+      localStorage.setItem('mirandaUpdates', JSON.stringify(updates));
       loadUpdates();
     }
 
