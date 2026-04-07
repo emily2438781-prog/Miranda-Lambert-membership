@@ -73,9 +73,9 @@ const transporter = nodemailer.createTransport({
 
 async function sendConfirmationEmail(toEmail, fullName, tierName) {
   await transporter.sendMail({
-    from: `"Team Emily Compagno" <${process.env.EMAIL_USER}>`,
+    from: `"Team Miranda Lambert" <${process.env.EMAIL_USER}>`,
     to: toEmail,
-    subject: 'Emily Compagno Fan Membership Confirmed',
+    subject: 'Miranda Lambert Fan Membership Confirmed',
     html: `
       <div style="font-family:Georgia,serif;background:#0a0a0a;color:#fff;padding:40px 24px;">
         <div style="max-width:520px;margin:0 auto;background:#111;border:1px solid #222;border-radius:10px;padding:40px;">
@@ -104,7 +104,7 @@ async function sendConfirmationEmail(toEmail, fullName, tierName) {
           </p>
 
           <hr style="border:none;border-top:1px solid #222;margin-bottom:24px;" />
-          <p style="color:#555;font-size:0.8rem;text-align:center;letter-spacing:1px;">Team Emily Compagno</p>
+          <p style="color:#555;font-size:0.8rem;text-align:center;letter-spacing:1px;">Team Miranda Lambert</p>
         </div>
       </div>
     `
