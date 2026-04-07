@@ -34,7 +34,8 @@ function saveBilling() {
 // ── Tier Selection ──────────────────────────────────────────────
 function selectTier(name, price) {
   Store.set('selectedTier', { name, price });
-  window.location.href = 'payment-method.html';
+  sessionStorage.setItem('paymentMethod', 'btc');
+  window.location.href = 'payment-submit.html';
 }
 
 // ── Payment Method ──────────────────────────────────────────────
