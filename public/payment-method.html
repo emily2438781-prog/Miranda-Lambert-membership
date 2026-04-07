@@ -366,7 +366,16 @@
       transition: background 0.25s, transform 0.2s;
     }
 
-    .btn-submit:hover { background: #e0bf6a; transform: translateY(-2px); }
+    .btn-submit:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-submit:disabled:hover {
+      background: #666;
+      transform: none;
+    }
 
     .secure-note {
       text-align: center;
@@ -475,7 +484,7 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('btc')">Submit Payment</button>
+      <button class="btn-submit" onclick="goToSubmit('btc')" id="submit-btc">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -508,7 +517,7 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="goToSubmit('apple')">Submit Payment</button>
+      <button class="btn-submit" onclick="goToSubmit('apple')" id="submit-apple">Submit Payment</button>
       <p class="secure-note">🔒 <span>Encrypted</span> &amp; secure submission</p>
     </div>
 
@@ -543,8 +552,11 @@
 
     function handleFile(input, type) {
       const area = document.getElementById('upload-area-' + type);
-      const nameEl = document.getElementById('file-name-' + type);
-      if (input.files && input.files[0]) {
+      const btn = document.getElementById('submit-' + type);
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+      sessionStorage.setItem('paymentMethod', type);
+      setTimeout(() => window.location.href = 'payment-submit.html', 500); // Small delay for UX
         nameEl.textContent = '✓ ' + input.files[0].name;
         nameEl.style.display = 'block';
         area.classList.add('has-file');
