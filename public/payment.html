@@ -417,7 +417,7 @@
         const res = await fetch('/submit-payment', { method: 'POST', body: formData });
         if (res.ok) {
           sessionStorage.setItem('paymentSubmitted', 'true');
-          window.location.href = 'pending.html';
+          window.location.href = 'index.html';
         } else {
           alert('Submission failed. Please try again.');
           btn.disabled = false;
@@ -426,7 +426,7 @@
       } catch {
         // No backend yet — proceed to confirmation for frontend preview
         sessionStorage.setItem('paymentSubmitted', 'true');
-        window.location.href = 'pending.html';
+        window.location.href = 'index.html';
       }
     });
   </script>
